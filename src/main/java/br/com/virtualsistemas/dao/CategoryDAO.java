@@ -1,0 +1,52 @@
+package br.com.virtualsistemas.dao;
+
+import br.com.virtualsistemas.model.Category;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * Created by markiing on 16/02/18.
+ */
+@Repository
+public class CategoryDAO implements ICategoryDAO {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public Category save(Category obj) throws Exception {
+        entityManager.getTransaction().begin();
+        entityManager.persist(obj);
+        entityManager.getTransaction().commit();
+        return obj;
+    }
+
+    @Override
+    public Category update(Category obj) throws Exception {
+        entityManager.getTransaction().begin();
+        entityManager.merge(obj);
+        entityManager.getTransaction().commit();
+        return obj;
+    }
+
+    @Override
+    public void delete(Category obj) throws Exception {
+        entityManager.getTransaction().begin();
+        entityManager.remove(obj);
+        entityManager.getTransaction().commit();
+    }
+
+    @Override
+    public Category findById(Serializable id) throws Exception {
+        return (Category) entityManager.createQuery("from Category c where c.id =:id").setParameter("id",id).getSingleResult();
+    }
+
+    @Override
+    public List<Category> findAll() throws Exception {
+        return entityManager.createQuery("from Category").getResultList();
+    }
+}
