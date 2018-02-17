@@ -1,15 +1,18 @@
 package br.com.virtualsistemas.dao;
 
 import br.com.virtualsistemas.model.Product;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.io.Serializable;
 import java.util.List;
 
 
 @Repository
+@Transactional
 public class ProductDAO implements IProductDAO {
 
     @PersistenceContext
@@ -18,25 +21,21 @@ public class ProductDAO implements IProductDAO {
 
     @Override
     public Product save(Product obj) throws Exception {
-        entityManager.getTransaction().begin();
-        entityManager.persist(obj);
-        entityManager.getTransaction().commit();
+        entityManager.unwrap(Session.class).save(obj);
         return obj;
     }
 
     @Override
     public Product update(Product obj) throws Exception {
-        entityManager.getTransaction().begin();
-        entityManager.merge(obj);
-        entityManager.getTransaction().commit();
+        entityManager.unwrap(Session.class).update(obj);
         return obj;
     }
 
     @Override
     public void delete(Product obj) throws Exception {
-        entityManager.getTransaction().begin();
-        entityManager.remove(obj);
-        entityManager.getTransaction().commit();
+        Session session = entityManager.unwrap(Session.class);
+        Object mergedObject = session.merge(obj);
+        session.delete(mergedObject);
     }
 
     @Override

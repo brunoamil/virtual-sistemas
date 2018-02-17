@@ -1,5 +1,6 @@
 package br.com.virtualsistemas.configuration;
 
+import br.com.virtualsistemas.resource.CategoryResource;
 import br.com.virtualsistemas.resource.ProductResource;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ public class JerseyConfiguration extends ResourceConfig {
     @PostConstruct
     public void configuration(){
         register(ProductResource.class);
+        register(CategoryResource.class);
     }
 
 }

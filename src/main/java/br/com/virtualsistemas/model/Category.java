@@ -22,7 +22,7 @@ public @Data class Category {
     @Column
     private Integer id;
 
-    @Column
+    @Column(unique = true)
     private String name;
 
     @ManyToOne
