@@ -30,7 +30,7 @@ public class CategoryResource{
     @Path("/save")
     public ResponseEntity save(Category obj) throws Exception {
         Category p = facade.get(ICategoryDAO.class).save(obj);
-        return ResponseEntity.ok(String.format("Categoria %s inserida com sucesso", p.getName()));
+        return ResponseEntity.ok(p);
     }
 
     @POST
@@ -39,7 +39,7 @@ public class CategoryResource{
     @Path("/update")
     public ResponseEntity update(Category obj) throws Exception {
         Category p = facade.get(ICategoryDAO.class).update(obj);
-        return ResponseEntity.ok(String.format("Categoria %s alterada com sucesso", p.getName()));
+        return ResponseEntity.ok(p);
     }
 
     @DELETE
@@ -55,8 +55,8 @@ public class CategoryResource{
     @Produces("application/json")
     @Consumes("application/json")
     @Path("/all")
-    public List<Category> findAll() throws Exception {
-        return facade.get(ICategoryDAO.class).findAll();
+    public ResponseEntity<List<Category>> findAll() throws Exception {
+        return ResponseEntity.ok(facade.get(ICategoryDAO.class).findAll());
     }
 
     @GET
@@ -67,7 +67,11 @@ public class CategoryResource{
         try {
             return ResponseEntity.ok(facade.get(ICategoryDAO.class).findById(code));
         } catch (NoResultException ex) {
-            return new ResponseEntity<Object>(String.format("A categoria %d não foi encontrada",code), HttpStatus.OK);
+            return new ResponseEntity<Object>(String.format("A categoria %d não foi encontrada.",code), HttpStatus.OK);
+        }catch (NumberFormatException ex){
+            return new ResponseEntity<Object>("Digite um número válido.", HttpStatus.BAD_REQUEST);
+        } catch (Exception ex){
+            return new ResponseEntity<Object>("Ocorreu algum problema na requisição.", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -80,6 +84,8 @@ public class CategoryResource{
             return ResponseEntity.ok(facade.get(ICategoryDAO.class).findByParent(parentCode));
         } catch (NoResultException ex) {
             return new ResponseEntity<Object>(String.format("A categoria pai %d não foi encontrado",parentCode), HttpStatus.OK);
+        } catch (NumberFormatException ex){
+            return new ResponseEntity<Object>("Digite um número válido ", HttpStatus.BAD_REQUEST);
         }
     }
 }

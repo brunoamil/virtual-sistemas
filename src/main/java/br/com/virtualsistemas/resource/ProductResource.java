@@ -29,7 +29,7 @@ public class ProductResource {
     @Path("/save")
     public ResponseEntity save(@NotNull Product product) throws Exception {
         Product p = facade.get(IProductDAO.class).save(product);
-        return ResponseEntity.ok(String.format("Produto de id %d inserido com sucesso", p.getId()));
+        return ResponseEntity.ok(p);
     }
 
     @POST
@@ -37,7 +37,7 @@ public class ProductResource {
     @Path("/update")
     public ResponseEntity update(Product product) throws Exception {
         Product p = facade.get(IProductDAO.class).update(product);
-        return ResponseEntity.ok(String.format("Produto %d alterado com sucesso", p.getId()));
+        return ResponseEntity.ok(p);
     }
 
 
@@ -52,9 +52,8 @@ public class ProductResource {
     @GET
     @Produces("application/json")
     @Path("/all")
-    public List<Product> findAll() throws Exception {
-        return facade.get(IProductDAO.class).findAll();
-
+    public ResponseEntity<List<Product>> findAll() throws Exception {
+        return ResponseEntity.ok(facade.get(IProductDAO.class).findAll());
     }
 
     @GET
