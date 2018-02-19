@@ -22,4 +22,4 @@ A documentação da APi pode ser encontrada [Aqui](https://documenter.getpostman
 # Execução
 1. Clone o repositório</br>
 2. Execute <code>mvn spring-boot:run</code>
-3. Pronto! A aplicação estará disponível em http://localhost:8089/virtual-sistemas-api
+3. Pronto! A aplicação estará disponível em http://localhost:8080/virtual-sistemas-api
